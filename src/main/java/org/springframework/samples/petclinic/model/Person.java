@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.model;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 
 /**
@@ -35,6 +36,11 @@ public class Person extends BaseEntity {
 	@NotEmpty
 	private String lastName;
 
+    @Column(name = "age")
+    @NotEmpty
+    @Digits(fraction = 0, integer = 4)
+    private String age;
+
 	public String getFirstName() {
 		return this.firstName;
 	}
@@ -50,5 +56,14 @@ public class Person extends BaseEntity {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+
+    public String getAge() {
+        return this.age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
 
 }
