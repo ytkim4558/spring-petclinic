@@ -36,10 +36,7 @@ public class Person extends BaseEntity {
 	@NotEmpty
 	private String lastName;
 
-    @Column(name = "age")
-    @NotEmpty
-    @Digits(fraction = 0, integer = 4)
-    private String age;
+    private Integer age;
 
 	public String getFirstName() {
 		return this.firstName;
@@ -58,11 +55,11 @@ public class Person extends BaseEntity {
 	}
 
 
-    public String getAge() {
+    public Integer getAge() {
         return this.age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
