@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,9 +42,18 @@ class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
+	@Autowired
 	private final OwnerRepository owners;
 
+	@Autowired
 	private VisitRepository visits;
+
+	private PetRepository petRepository;
+
+	@Autowired
+	public void setPetRepository(PetRepository petRepository) {
+		this.petRepository = petRepository;
+	}
 
 	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
 		this.owners = clinicService;
@@ -56,6 +66,7 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/new")
+	// @LogExecutionTime
 	public String initCreationForm(Map<String, Object> model) {
 		Owner owner = new Owner();
 		model.put("owner", owner);
@@ -63,6 +74,7 @@ class OwnerController {
 	}
 
 	@PostMapping("/owners/new")
+	// @LogExecutionTime
 	public String processCreationForm(@Valid Owner owner, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
@@ -74,30 +86,32 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/find")
+	// @LogExecutionTime
 	public String initFindForm(Map<String, Object> model) {
 		model.put("owner", new Owner());
 		return "owners/findOwners";
 	}
 
 	@GetMapping("/owners")
+	// @LogExecutionTime
 	public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
 		// allow parameterless GET request for /owners to return all records
-//		if (owner.getLastName() == null) {
-//			owner.setLastName(""); // empty string signifies broadest possible search
-//		}
-        if (owner.getFirstName() == null) {
+		// if (owner.getLastName() == null) {
+		// owner.setLastName(""); // empty string signifies broadest possible search
+		// }
+		if (owner.getFirstName() == null) {
 			owner.setFirstName(""); // empty string signifies broadest possible search
 		}
 
-//		// find owners by last name
-//		Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
-//		if (results.isEmpty()) {
-//			// no owners found
-//			result.rejectValue("lastName", "notFound", "not found");
-//			return "owners/findOwners";
-//		}
-        // find owners by first name
+		// // find owners by last name
+		// Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+		// if (results.isEmpty()) {
+		// // no owners found
+		// result.rejectValue("lastName", "notFound", "not found");
+		// return "owners/findOwners";
+		// }
+		// find owners by first name
 		Collection<Owner> results = this.owners.findByFirstName(owner.getFirstName());
 		if (results.isEmpty()) {
 			// no owners found
@@ -117,6 +131,7 @@ class OwnerController {
 	}
 
 	@GetMapping("/owners/{ownerId}/edit")
+	// @LogExecutionTime
 	public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
 		Owner owner = this.owners.findById(ownerId);
 		model.addAttribute(owner);
@@ -124,6 +139,7 @@ class OwnerController {
 	}
 
 	@PostMapping("/owners/{ownerId}/edit")
+	// @LogExecutionTime
 	public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
 			@PathVariable("ownerId") int ownerId) {
 		if (result.hasErrors()) {

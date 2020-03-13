@@ -90,14 +90,14 @@ class ClinicServiceTests {
 		assertThat(owners).isEmpty();
 	}
 
-    @Test
-    void shouldFindOwnersByFirstName() {
-        Collection<Owner> owners = this.owners.findByFirstName("YongTak");
-        assertThat(owners).hasSize(2);
+	@Test
+	void shouldFindOwnersByFirstName() {
+		Collection<Owner> owners = this.owners.findByFirstName("YongTak");
+		assertThat(owners).hasSize(2);
 
-        owners = this.owners.findByFirstName("YongTak");
-        assertThat(owners).isEmpty();
-    }
+		owners = this.owners.findByFirstName("YongTaks");
+		assertThat(owners).isEmpty();
+	}
 
 	@Test
 	void shouldFindSingleOwnerWithPet() {
@@ -111,8 +111,8 @@ class ClinicServiceTests {
 	@Test
 	@Transactional
 	void shouldInsertOwner() {
-//		Collection<Owner> owners = this.owners.findByLastName("Schultz");
-        Collection<Owner> owners = this.owners.findByFirstName("Sam");
+		// Collection<Owner> owners = this.owners.findByLastName("Schultz");
+		Collection<Owner> owners = this.owners.findByFirstName("Sam");
 		int found = owners.size();
 
 		Owner owner = new Owner();
@@ -124,8 +124,8 @@ class ClinicServiceTests {
 		this.owners.save(owner);
 		assertThat(owner.getId().longValue()).isNotEqualTo(0);
 
-//		owners = this.owners.findByLastName("Schultz");
-        owners = this.owners.findByFirstName("Sam");
+		// owners = this.owners.findByLastName("Schultz");
+		owners = this.owners.findByFirstName("Sam");
 		assertThat(owners.size()).isEqualTo(found + 1);
 	}
 
